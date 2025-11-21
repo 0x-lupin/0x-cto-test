@@ -1,6 +1,6 @@
-# Contributing to Enterprise Management System
+# Contributing to Enterprise Hub
 
-Thank you for considering contributing to the Enterprise Management System! We welcome contributions from the community.
+Thank you for considering contributing to Enterprise Hub! We welcome contributions from the community.
 
 ## How to Contribute
 
@@ -24,8 +24,8 @@ Feature requests are welcome! Please include:
 
 1. **Fork the Repository**
    ```bash
-   git clone https://github.com/your-username/enterprise-management-system.git
-   cd enterprise-management-system
+   git clone https://github.com/your-username/enterprise-hub.git
+   cd enterprise-hub
    ```
 
 2. **Create a Branch**

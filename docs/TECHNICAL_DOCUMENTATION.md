@@ -1,4 +1,4 @@
-# Technical Documentation - Enterprise Management System
+# Technical Documentation - Enterprise Hub
 
 ## Table of Contents
 

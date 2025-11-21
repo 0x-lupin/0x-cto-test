@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get the Enterprise Management System up and running in minutes!
+Get Enterprise Hub up and running in minutes!
 
 ## 🚀 Quick Setup (Using Docker - Recommended)
 
@@ -13,7 +13,7 @@ Get the Enterprise Management System up and running in minutes!
 1. **Clone and Navigate**
    ```bash
    git clone <repository-url>
-   cd enterprise-management-system
+   cd enterprise-hub
    ```
 
 2. **Start Everything**
@@ -49,7 +49,7 @@ That's it! 🎉
 1. **Clone Repository**
    ```bash
    git clone <repository-url>
-   cd enterprise-management-system
+   cd enterprise-hub
    ```
 
 2. **Setup Database**
@@ -252,4 +252,4 @@ npx prisma generate
 
 ---
 
-**You're all set! Start exploring the Enterprise Management System!** 🚀
+**You're all set! Start exploring Enterprise Hub!** 🚀

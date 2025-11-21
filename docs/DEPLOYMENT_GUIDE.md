@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers various deployment strategies for the Enterprise Management System.
+This guide covers various deployment strategies for Enterprise Hub.
 
 ## Table of Contents
 
@@ -162,7 +162,7 @@ Internet → CloudFront → ALB → ECS (Frontend)
 **1. Create RDS PostgreSQL Instance**
 ```bash
 aws rds create-db-instance \
-  --db-instance-identifier ems-db \
+  --db-instance-identifier enterprise-hub-db \
   --db-instance-class db.t3.medium \
   --engine postgres \
   --engine-version 15.3 \
@@ -237,7 +237,7 @@ git push heroku main
 
 **1. Create `app.yaml`:**
 ```yaml
-name: enterprise-management-system
+name: enterprise-hub
 region: nyc
 
 databases:
@@ -354,7 +354,7 @@ sudo certbot --nginx -d yourdomain.com -d api.yourdomain.com
 
 **3. Nginx Configuration:**
 
-`/etc/nginx/sites-available/ems`:
+`/etc/nginx/sites-available/enterprise-hub`:
 
 ```nginx
 # Frontend
@@ -371,7 +371,7 @@ server {
     ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
 
-    root /var/www/ems/frontend/dist;
+    root /var/www/enterprise-hub/frontend/dist;
     index index.html;
 
     location / {
@@ -413,7 +413,7 @@ server {
 
 **4. Enable and restart:**
 ```bash
-sudo ln -s /etc/nginx/sites-available/ems /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/enterprise-hub /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
@@ -443,10 +443,10 @@ npm install -g pm2
 
 # Start backend
 cd backend
-pm2 start dist/server.js --name ems-backend
+pm2 start dist/server.js --name enterprise-hub-backend
 
 # View logs
-pm2 logs ems-backend
+pm2 logs enterprise-hub-backend
 
 # Monitor
 pm2 monit
@@ -458,9 +458,9 @@ pm2 save
 
 **2. Log Rotation:**
 
-`/etc/logrotate.d/ems`:
+`/etc/logrotate.d/enterprise-hub`:
 ```
-/var/log/ems/*.log {
+/var/log/enterprise-hub/*.log {
     daily
     missingok
     rotate 14
@@ -515,13 +515,13 @@ git pull origin main
 cd backend
 npm ci
 npm run build
-pm2 reload ems-backend
+pm2 reload enterprise-hub-backend
 
 # Frontend update
 cd ../frontend
 npm ci
 npm run build
-rsync -av dist/ /var/www/ems/frontend/dist/
+rsync -av dist/ /var/www/enterprise-hub/frontend/dist/
 
 # Database migrations (if needed)
 cd ../backend
@@ -537,7 +537,7 @@ pm2 list
 # Rollback to previous version
 git checkout <previous-commit>
 cd backend && npm run build
-pm2 reload ems-backend
+pm2 reload enterprise-hub-backend
 ```
 
 ## Troubleshooting

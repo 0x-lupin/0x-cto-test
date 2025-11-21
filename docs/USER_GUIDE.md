@@ -1,4 +1,4 @@
-# User Guide - Enterprise Management System
+# User Guide - Enterprise Hub
 
 ## Table of Contents
 
