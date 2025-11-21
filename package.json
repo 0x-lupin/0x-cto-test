@@ -1,0 +1,31 @@
+{
+  "name": "enterprise-management-system",
+  "version": "1.0.0",
+  "description": "Full-featured Enterprise Management System with CMS, HR, Payroll, Analytics, and more",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "migrate": "cd backend && npx prisma migrate deploy",
+    "seed": "cd backend && npx prisma db seed"
+  },
+  "keywords": [
+    "enterprise",
+    "cms",
+    "hr",
+    "payroll",
+    "analytics",
+    "erp",
+    "management"
+  ],
+  "author": "",
+  "license": "MIT"
+}

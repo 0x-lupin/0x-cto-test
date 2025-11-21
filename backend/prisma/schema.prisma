@@ -1,0 +1,212 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  HR_MANAGER
+  MANAGER
+  EMPLOYEE
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  HALF_DAY
+  LEAVE
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  password        String
+  firstName       String
+  lastName        String
+  role            Role     @default(EMPLOYEE)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  employee        Employee?
+  createdTickets  Ticket[]  @relation("CreatedTickets")
+  assignedTickets Ticket[]  @relation("AssignedTickets")
+  contents        Content[]
+  
+  @@index([email])
+}
+
+model Employee {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  employeeCode    String   @unique
+  department      String
+  designation     String
+  dateOfJoining   DateTime
+  dateOfBirth     DateTime
+  phone           String
+  address         String
+  emergencyContact String
+  bankAccount     String?
+  baseSalary      Float
+  managerId       String?
+  
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  manager         Employee?         @relation("ManagerSubordinates", fields: [managerId], references: [id])
+  subordinates    Employee[]        @relation("ManagerSubordinates")
+  attendance      Attendance[]
+  leaves          Leave[]
+  payrolls        Payroll[]
+  
+  @@index([employeeCode])
+  @@index([department])
+}
+
+model Attendance {
+  id          String            @id @default(uuid())
+  employeeId  String
+  date        DateTime
+  checkIn     DateTime?
+  checkOut    DateTime?
+  status      AttendanceStatus  @default(PRESENT)
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  
+  employee    Employee          @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  
+  @@unique([employeeId, date])
+  @@index([employeeId, date])
+}
+
+model Leave {
+  id          String      @id @default(uuid())
+  employeeId  String
+  leaveType   String
+  startDate   DateTime
+  endDate     DateTime
+  reason      String
+  status      LeaveStatus @default(PENDING)
+  approvedBy  String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  employee    Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  
+  @@index([employeeId])
+  @@index([status])
+}
+
+model Payroll {
+  id              String   @id @default(uuid())
+  employeeId      String
+  month           Int
+  year            Int
+  baseSalary      Float
+  allowances      Float    @default(0)
+  deductions      Float    @default(0)
+  tax             Float    @default(0)
+  netSalary       Float
+  paymentDate     DateTime?
+  isPaid          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  employee        Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  
+  @@unique([employeeId, month, year])
+  @@index([employeeId])
+  @@index([year, month])
+}
+
+model Ticket {
+  id          String          @id @default(uuid())
+  title       String
+  description String
+  priority    TicketPriority  @default(MEDIUM)
+  status      TicketStatus    @default(OPEN)
+  createdById String
+  assignedToId String?
+  category    String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  resolvedAt  DateTime?
+  
+  createdBy   User            @relation("CreatedTickets", fields: [createdById], references: [id])
+  assignedTo  User?           @relation("AssignedTickets", fields: [assignedToId], references: [id])
+  
+  @@index([status])
+  @@index([createdById])
+  @@index([assignedToId])
+}
+
+model Budget {
+  id          String   @id @default(uuid())
+  department  String
+  category    String
+  allocated   Float
+  spent       Float    @default(0)
+  year        Int
+  quarter     Int
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([department])
+  @@index([year, quarter])
+}
+
+model Content {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String
+  excerpt     String?
+  authorId    String
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  author      User     @relation(fields: [authorId], references: [id])
+  
+  @@index([slug])
+  @@index([authorId])
+  @@index([isPublished])
+}
+
+model Analytics {
+  id          String   @id @default(uuid())
+  metric      String
+  value       Float
+  metadata    String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+  
+  @@index([metric, date])
+}
