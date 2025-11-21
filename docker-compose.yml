@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: ems-postgres
+    container_name: enterprise-hub-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -22,7 +22,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: ems-backend
+    container_name: enterprise-hub-backend
     environment:
       NODE_ENV: production
       PORT: 5000
@@ -44,7 +44,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: ems-frontend
+    container_name: enterprise-hub-frontend
     environment:
       VITE_API_URL: http://localhost:5000/api
     ports:

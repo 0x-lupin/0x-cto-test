@@ -1,4 +1,4 @@
-# Enterprise Management System (EMS)
+# Enterprise Hub
 
 A comprehensive, full-stack enterprise resource planning (ERP) system with content management, HR, payroll, analytics, and more.
 
@@ -65,7 +65,7 @@ A comprehensive, full-stack enterprise resource planning (ERP) system with conte
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd enterprise-management-system
+   cd enterprise-hub
    ```
 
 2. **Configure environment variables**
@@ -89,7 +89,7 @@ A comprehensive, full-stack enterprise resource planning (ERP) system with conte
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd enterprise-management-system
+   cd enterprise-hub
    ```
 
 2. **Install dependencies**

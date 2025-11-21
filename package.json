@@ -1,5 +1,5 @@
 {
-  "name": "enterprise-management-system",
+  "name": "enterprise-hub",
   "version": "1.0.0",
   "description": "Full-featured Enterprise Management System with CMS, HR, Payroll, Analytics, and more",
   "main": "index.js",
