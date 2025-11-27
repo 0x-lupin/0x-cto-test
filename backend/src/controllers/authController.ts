@@ -80,7 +80,6 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user?.userId },
-      include: { employee: true },
       select: {
         id: true,
         email: true,
